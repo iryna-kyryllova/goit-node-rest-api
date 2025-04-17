@@ -14,10 +14,17 @@ const updateContact = async (contactId, data) => {
   return contact.update(data, { returning: true })
 }
 
+const updateStatusContact = async (contactId, data) => {
+  const contact = await getContactById(contactId)
+  if (!contact) return null
+  return contact.update(data, { returning: true })
+}
+
 export default {
   listContacts,
   getContactById,
   removeContact,
   addContact,
-  updateContact
+  updateContact,
+  updateStatusContact
 }

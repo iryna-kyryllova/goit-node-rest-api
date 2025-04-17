@@ -44,3 +44,16 @@ export const updateContact = controllerWrapper(async (req, res) => {
 
   res.json(data)
 })
+
+export const updateStatusContact = controllerWrapper(async (req, res) => {
+  const { id } = req.params
+  const body = req.body
+
+  if (!body) throw HttpError(400, 'Missing field favorite')
+
+  const data = await contactsService.updateStatusContact(id, body)
+
+  if (!data) throw HttpError(404, 'Not found')
+
+  res.json(data)
+})
