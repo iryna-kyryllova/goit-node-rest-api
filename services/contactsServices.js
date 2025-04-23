@@ -4,7 +4,12 @@ const listContacts = () => Contact.findAll()
 
 const getContactById = (contactId) => Contact.findByPk(contactId)
 
-const removeContact = (contactId) => Contact.destroy({ where: { id: contactId } })
+const removeContact = async (contactId) => {
+  const contact = await getContactById(contactId)
+  if (!contact) return null
+  await contact.destroy()
+  return contact
+}
 
 const addContact = (name, email, phone) => Contact.create({ name, email, phone })
 
