@@ -14,10 +14,13 @@ export const register = controllerWrapper(async (req, res) => {
 })
 
 export const login = controllerWrapper(async (req, res) => {
-  const newUser = await authService.signup(req.body)
+  const { token, user } = await authService.login(req.body)
 
-  res.status(201).json({
-    email: newUser.email,
-    subscription: newUser.subscription
+  res.json({
+    token,
+    user: {
+      email: user.email,
+      subscription: user.subscription
+    }
   })
 })
