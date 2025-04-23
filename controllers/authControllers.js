@@ -1,0 +1,23 @@
+import authService from '../services/authServices.js'
+import HttpError from '../helpers/HttpError.js'
+import controllerWrapper from '../decorators/controllerWrapper.js'
+
+export const register = controllerWrapper(async (req, res) => {
+  const newUser = await authService.register(req.body)
+
+  res.status(201).json({
+    user: {
+      email: newUser.email,
+      subscription: newUser.subscription
+    }
+  })
+})
+
+export const login = controllerWrapper(async (req, res) => {
+  const newUser = await authService.signup(req.body)
+
+  res.status(201).json({
+    email: newUser.email,
+    subscription: newUser.subscription
+  })
+})
