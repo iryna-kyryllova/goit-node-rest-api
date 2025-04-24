@@ -3,13 +3,15 @@ import HttpError from '../helpers/HttpError.js'
 import controllerWrapper from '../decorators/controllerWrapper.js'
 
 export const getAllContacts = controllerWrapper(async (req, res) => {
-  const data = await contactsService.listContacts()
+  const { id: owner } = req.user
+  const data = await contactsService.listContacts(owner)
   res.json(data)
 })
 
 export const getOneContact = controllerWrapper(async (req, res) => {
+  const { id: owner } = req.user
   const { id } = req.params
-  const data = await contactsService.getContactById(id)
+  const data = await contactsService.getContact({ id, owner })
 
   if (!data) throw HttpError(404, 'Not found')
 
@@ -17,8 +19,9 @@ export const getOneContact = controllerWrapper(async (req, res) => {
 })
 
 export const deleteContact = controllerWrapper(async (req, res) => {
+  const { id: owner } = req.user
   const { id } = req.params
-  const data = await contactsService.removeContact(id)
+  const data = await contactsService.removeContact({ id, owner })
 
   if (!data) throw HttpError(404, 'Not found')
 
@@ -26,19 +29,20 @@ export const deleteContact = controllerWrapper(async (req, res) => {
 })
 
 export const createContact = controllerWrapper(async (req, res) => {
-  const { name, email, phone } = req.body
-  const data = await contactsService.addContact(name, email, phone)
+  const { id: owner } = req.user
+  const data = await contactsService.addContact({ ...req.body, owner })
 
   res.status(201).json(data)
 })
 
 export const updateContact = controllerWrapper(async (req, res) => {
+  const { id: owner } = req.user
   const { id } = req.params
   const body = req.body
 
   if (!Object.keys(body).length) throw HttpError(400, 'Body must have at least one field')
 
-  const data = await contactsService.updateContact(id, body)
+  const data = await contactsService.updateContact({ id, owner }, body)
 
   if (!data) throw HttpError(404, 'Not found')
 
@@ -46,12 +50,13 @@ export const updateContact = controllerWrapper(async (req, res) => {
 })
 
 export const updateStatusContact = controllerWrapper(async (req, res) => {
+  const { id: owner } = req.user
   const { id } = req.params
   const body = req.body
 
   if (!body) throw HttpError(400, 'Missing field favorite')
 
-  const data = await contactsService.updateStatusContact(id, body)
+  const data = await contactsService.updateStatusContact({ id, owner }, body)
 
   if (!data) throw HttpError(404, 'Not found')
 

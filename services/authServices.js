@@ -34,7 +34,7 @@ export const login = async (data) => {
     throw HttpError(401, 'Email or password is wrong')
   }
 
-  const payload = { email }
+  const payload = { id: user.id }
 
   const token = generateToken(payload)
 

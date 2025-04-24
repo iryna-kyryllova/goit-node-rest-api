@@ -1,26 +1,28 @@
 import Contact from '../db/models/Contact.js'
 
-const listContacts = () => Contact.findAll()
+const listContacts = (query) => Contact.findAll({ where: query })
 
 const getContactById = (contactId) => Contact.findByPk(contactId)
 
-const removeContact = async (contactId) => {
-  const contact = await getContactById(contactId)
+const getContact = (query) => Contact.findOne({ where: query })
+
+const removeContact = async (query) => {
+  const contact = await getContact(query)
   if (!contact) return null
   await contact.destroy()
   return contact
 }
 
-const addContact = (name, email, phone) => Contact.create({ name, email, phone })
+const addContact = (data) => Contact.create(data)
 
-const updateContact = async (contactId, data) => {
-  const contact = await getContactById(contactId)
+const updateContact = async (query, data) => {
+  const contact = await getContact(query)
   if (!contact) return null
   return contact.update(data, { returning: true })
 }
 
-const updateStatusContact = async (contactId, data) => {
-  const contact = await getContactById(contactId)
+const updateStatusContact = async (query, data) => {
+  const contact = await getContact(query)
   if (!contact) return null
   return contact.update(data, { returning: true })
 }
@@ -28,6 +30,7 @@ const updateStatusContact = async (contactId, data) => {
 export default {
   listContacts,
   getContactById,
+  getContact,
   removeContact,
   addContact,
   updateContact,

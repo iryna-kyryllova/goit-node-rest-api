@@ -1,5 +1,4 @@
 import authService from '../services/authServices.js'
-import HttpError from '../helpers/HttpError.js'
 import controllerWrapper from '../decorators/controllerWrapper.js'
 
 export const register = controllerWrapper(async (req, res) => {
