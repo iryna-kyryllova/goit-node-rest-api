@@ -3,9 +3,9 @@ import User from '../db/models/User.js'
 import HttpError from '../helpers/HttpError.js'
 import { generateToken } from '../helpers/jwt.js'
 
-export const findUser = (query) => User.findOne({ where: query })
+const findUser = (query) => User.findOne({ where: query })
 
-export const register = async (data) => {
+const register = async (data) => {
   const { email, password } = data
 
   const user = await User.findOne({ where: { email } })
@@ -19,7 +19,7 @@ export const register = async (data) => {
   return User.create({ ...data, password: hashedPassword })
 }
 
-export const login = async (data) => {
+const login = async (data) => {
   const { email, password } = data
 
   const user = await User.findOne({ where: { email } })
@@ -38,7 +38,19 @@ export const login = async (data) => {
 
   const token = generateToken(payload)
 
+  await user.update({ token })
+
   return { token, user }
 }
 
-export default { register, login }
+const logout = async (id) => {
+  const user = await findUser({ id })
+
+  if (!user || !user.token) {
+    throw HttpError(401, 'Not authorized')
+  }
+
+  await user.update({ token: null })
+}
+
+export default { findUser, register, login, logout }

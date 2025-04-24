@@ -4,7 +4,7 @@ import controllerWrapper from '../decorators/controllerWrapper.js'
 
 export const getAllContacts = controllerWrapper(async (req, res) => {
   const { id: owner } = req.user
-  const data = await contactsService.listContacts(owner)
+  const data = await contactsService.listContacts({ owner })
   res.json(data)
 })
 

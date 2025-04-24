@@ -24,7 +24,13 @@ export const login = controllerWrapper(async (req, res) => {
   })
 })
 
-export const logout = controllerWrapper(async (req, res) => {})
+export const logout = controllerWrapper(async (req, res) => {
+  const { id } = req.user
+
+  await authService.logout(id)
+
+  res.status(204).json()
+})
 
 export const getCurrentUser = controllerWrapper(async (req, res) => {
   const { email, subscription } = req.user

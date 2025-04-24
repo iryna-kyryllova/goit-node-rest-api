@@ -10,7 +10,7 @@ authRouter.post('/register', validateBody(authRegisterSchema), register)
 
 authRouter.post('/login', validateBody(authLoginSchema), login)
 
-authRouter.get('/logout', logout)
+authRouter.post('/logout', authenticate, logout)
 
 authRouter.get('/current', authenticate, getCurrentUser)
 

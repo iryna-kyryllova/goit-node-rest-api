@@ -1,5 +1,5 @@
 import HttpError from '../helpers/HttpError.js'
-import { findUser } from '../services/authServices.js'
+import authService from '../services/authServices.js'
 import { verifyToken } from '../helpers/jwt.js'
 
 const authenticate = async (req, res, next) => {
@@ -21,9 +21,9 @@ const authenticate = async (req, res, next) => {
     return next(HttpError(401, 'Not authorized'))
   }
 
-  const user = await findUser({ id: payload.id })
+  const user = await authService.findUser({ id: payload.id })
 
-  if (!user) {
+  if (!user || !user.token) {
     return next(HttpError(401, 'Not authorized'))
   }
 
