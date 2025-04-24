@@ -23,3 +23,14 @@ export const login = controllerWrapper(async (req, res) => {
     }
   })
 })
+
+export const logout = controllerWrapper(async (req, res) => {})
+
+export const getCurrentUser = controllerWrapper(async (req, res) => {
+  const { email, subscription } = req.user
+
+  res.json({
+    email,
+    subscription
+  })
+})
