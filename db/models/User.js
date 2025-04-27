@@ -15,6 +15,9 @@ const User = sequelize.define('user', {
       is: emailRegex
     }
   },
+  avatarURL: {
+    type: DataTypes.STRING
+  },
   subscription: {
     type: DataTypes.ENUM,
     values: ['starter', 'pro', 'business'],
@@ -26,6 +29,6 @@ const User = sequelize.define('user', {
   }
 })
 
-// User.sync()
+// User.sync({ alter: true })
 
 export default User

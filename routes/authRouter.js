@@ -3,6 +3,7 @@ import { register, login, logout, getCurrentUser } from '../controllers/authCont
 import validateBody from '../helpers/validateBody.js'
 import { authRegisterSchema, authLoginSchema } from '../schemas/authSchemas.js'
 import authenticate from '../middlewares/authenticate.js'
+import upload from '../middlewares/upload.js'
 
 const authRouter = express.Router()
 

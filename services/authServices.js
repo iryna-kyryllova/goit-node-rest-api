@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import gravatar from 'gravatar'
 import User from '../db/models/User.js'
 import HttpError from '../helpers/HttpError.js'
 import { generateToken } from '../helpers/jwt.js'
@@ -16,7 +17,9 @@ const register = async (data) => {
 
   const hashedPassword = await bcrypt.hash(password, 10)
 
-  return User.create({ ...data, password: hashedPassword })
+  const avatar = gravatar.url(email)
+
+  return User.create({ ...data, password: hashedPassword, avatarURL: avatar })
 }
 
 const login = async (data) => {
