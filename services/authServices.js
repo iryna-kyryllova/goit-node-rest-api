@@ -56,4 +56,16 @@ const logout = async (id) => {
   await user.update({ token: null })
 }
 
-export default { findUser, register, login, logout }
+const updateAvatar = async (id, avatar) => {
+  const user = await findUser({ id })
+
+  if (!user) {
+    throw HttpError(401, 'Not authorized')
+  }
+
+  await user.update({ avatarURL: avatar })
+
+  return { avatarURL: avatar }
+}
+
+export default { findUser, register, login, logout, updateAvatar }
