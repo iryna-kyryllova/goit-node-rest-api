@@ -16,6 +16,27 @@ export const register = controllerWrapper(async (req, res) => {
   })
 })
 
+export const verifyEmail = controllerWrapper(async (req, res) => {
+  const { verificationToken } = req.params
+  await authService.verifyEmail(verificationToken)
+
+  res.json({
+    message: 'Verification successful'
+  })
+})
+
+export const resendVerifyEmail = controllerWrapper(async (req, res) => {
+  const { email } = req.body
+
+  if (!email) throw HttpError(400, 'Помилка від Joi або іншої бібліотеки валідації')
+
+  await authService.resendVerifyEmail(email)
+
+  res.json({
+    message: 'Verification email sent'
+  })
+})
+
 export const login = controllerWrapper(async (req, res) => {
   const { token, user } = await authService.login(req.body)
 
