@@ -2,6 +2,7 @@ import path from 'node:path'
 import fs from 'node:fs/promises'
 import authService from '../services/authServices.js'
 import controllerWrapper from '../decorators/controllerWrapper.js'
+import HttpError from '../helpers/HttpError.js'
 
 const avatarsDir = path.resolve('public', 'avatars')
 
@@ -46,15 +47,16 @@ export const getCurrentUser = controllerWrapper(async (req, res) => {
 })
 
 export const updateAvatar = controllerWrapper(async (req, res) => {
+  const { file } = req
+  if (!file) throw HttpError(400, 'Missing field avatar')
+
   const { id } = req.user
   let avatar = null
 
-  if (req.file) {
-    const { path: oldPath, filename } = req.file
-    const newPath = path.join(avatarsDir, filename)
-    await fs.rename(oldPath, newPath)
-    avatar = path.join('avatars', filename)
-  }
+  const { path: oldPath, filename } = file
+  const newPath = path.join(avatarsDir, filename)
+  await fs.rename(oldPath, newPath)
+  avatar = path.join('avatars', filename)
 
   const data = await authService.updateAvatar(id, avatar)
 

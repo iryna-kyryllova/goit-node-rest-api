@@ -26,8 +26,8 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message })
 })
 
-const { DB_PORT } = process.env
-const port = DB_PORT || 3000
+const { SERVER_PORT } = process.env
+const port = SERVER_PORT || 3000
 
 app.listen(port, () => {
   console.log(`Server is running. Use our API on port: ${port}`)
